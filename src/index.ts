@@ -61,6 +61,7 @@ fastify.post('/:targetId/:gameId/:eventName/:valueData', async (request: Fastify
 
         if (socketsInRoom.length === 0) {
             log(`[Warning] No active sockets for ${roomName}`, 'yellow');
+            return { status: 'success', message: 'No active sockets'};
         }
 
         io.to(roomName).emit(eventNameFull, {
@@ -74,9 +75,9 @@ fastify.post('/:targetId/:gameId/:eventName/:valueData', async (request: Fastify
         log(` > Game: ${gameId}`, 'white');
         log(` > Event: ${eventName}`, 'white');
         log(` > Data: ${valueData}`, 'white');
-        return { status: 'success', sentTo: socketsInRoom.length };
+        return { status: 'success', message: 'Event sent successfully', sentTo: socketsInRoom.length };
     }
-
+    
     return reply.status(500).send({ error: 'Socket server not ready' });
 });
 
